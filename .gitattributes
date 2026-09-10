@@ -1,0 +1,9 @@
+# Web sources stay LF in the repo and in the working tree, whatever
+# core.autocrlf happens to be set to on a given machine.
+* text=auto eol=lf
+
+# Binary assets must never be line-ending converted.
+*.ico binary
+*.png binary
+*.tachibk binary
+*.gz binary

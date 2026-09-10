@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Manga Genres Read</title>
+		<link rel="icon" href="favicon.ico" sizes="32x32">
+		<link rel="icon" href="favicon.svg" type="image/svg+xml">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<div class="shell">
+			<header>
+				<p class="eyebrow">Reading library</p>
+				<h1>Manga Genres Read</h1>
+				<p class="dek">
+					Open a Mihon backup and see what your library is actually made of. A title carries several genre
+					tags at once, so every share here is a slice of all the tag assignments rather than of the titles.
+				</p>
+			</header>
+
+			<section class="intro" id="intro">
+				<label class="drop-target" for="fileInput">
+					<span aria-hidden="true" class="drop-mark">&#8593;</span>
+					<b>Drop a backup here</b>
+					<span class="drop-formats">.tachibk &middot; .proto.gz &middot; .json</span>
+					<span class="drop-browse">or choose a file</span>
+				</label>
+
+				<p class="intro-error" id="introError" hidden></p>
+
+				<div class="intro-notes">
+					<div>
+						<b>It stays on your device</b>
+						<p>
+							The backup is read in your browser and never uploaded. This page makes no network
+							request except for its own fonts.
+						</p>
+					</div>
+					<div>
+						<b>Where to find a backup</b>
+						<p>
+							In Mihon: Settings, then Data and storage, then Create backup. The file it writes is
+							named <code>app.mihon_&lt;date&gt;.tachibk</code>.
+						</p>
+					</div>
+					<div>
+						<b>What you get</b>
+						<p>
+							Genre share as a donut, the full ranking of every genre in the library, and a sortable
+							table, all filterable by the source each title came from.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<div class="report" id="report" hidden>
+				<div class="filters" id="filters">
+					<div class="field">
+						<div class="label">
+							<span id="sourceLabel">Sources</span>
+							<button class="reset" id="sourceReset" type="button">Select all</button>
+						</div>
+						<div class="chips" id="sourceChips"></div>
+					</div>
+
+					<div class="field">
+						<div class="label"><span>Slices</span></div>
+						<div class="segment" id="sliceSeg" role="group" aria-label="Number of named genre slices">
+							<button aria-pressed="false" data-slices="4" type="button">4</button>
+							<button aria-pressed="true" data-slices="6" type="button">6</button>
+							<button aria-pressed="false" data-slices="8" type="button">8</button>
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="label"><span>Tag cleanup</span></div>
+						<label class="check" for="excludeFormat">
+							<input checked id="excludeFormat" type="checkbox">
+							<span>
+								<b>Drop format tags</b>
+								Ignores the publishing tags listed below the charts.
+							</span>
+						</label>
+					</div>
+
+					<div class="field">
+						<div class="label"><span>Data</span></div>
+						<label class="loader" for="fileInput">
+							<span aria-hidden="true">&#8593;</span>
+							<span>Load another backup</span>
+						</label>
+						<p class="load-note" id="loadNote" data-kind="ok"></p>
+					</div>
+				</div>
+
+				<dl class="summary" id="summary"></dl>
+
+				<section class="panel">
+					<header>
+						<h2>Share of genre tags</h2>
+						<p class="sub" id="pieSub"></p>
+					</header>
+					<div class="pie-layout">
+						<div class="dial" id="dial">
+							<svg id="donut" viewBox="0 0 320 320" aria-labelledby="donutTitle">
+								<title id="donutTitle">Donut chart of genre share</title>
+							</svg>
+							<div class="hub" id="hub"></div>
+						</div>
+						<ul class="legend" id="legend"></ul>
+					</div>
+				</section>
+
+				<section class="panel">
+					<header>
+						<h2>Every genre in view, ranked</h2>
+						<p class="sub" id="barSub"></p>
+					</header>
+					<div class="bars" id="bars"></div>
+					<button class="more" id="barMore" type="button" hidden></button>
+				</section>
+
+				<section class="panel">
+					<header>
+						<h2>Table view</h2>
+						<p class="sub">
+							The same numbers without relying on colour. Titles counts the titles carrying the genre;
+							a title tagged Fantasy and Action is counted once in each.
+						</p>
+					</header>
+					<div class="table-wrap">
+						<table>
+							<thead id="thead"></thead>
+							<tbody id="tbody"></tbody>
+						</table>
+					</div>
+				</section>
+
+				<div class="notes">
+					<p id="noteFormat"></p>
+					<p id="noteMerges" hidden></p>
+					<p id="noteSkew"></p>
+					<p>
+						The two percentages answer different questions. <b>Share of tags</b> divides by every tag
+						assignment in view, so the slices add up to 100% and the donut is a true part-to-whole.
+						<b>On titles</b> divides by the titles in view, and since one title carries several genres
+						those figures add up to far more than 100%.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!--
+			Kept outside both panes: a label cannot open a file picker whose input is
+			inside a hidden container, and both the landing target and the filter row
+			point at this one input.
+		-->
+		<input
+			accept=".tachibk,.proto.gz,.gz,.proto,.json,application/json,application/gzip"
+			class="file-input"
+			id="fileInput"
+			type="file">
+
+		<div id="tip" hidden role="tooltip"></div>
+
+		<div class="dropzone" id="dropzone" hidden>
+			<div class="dropzone-card">
+				<b>Drop to chart it</b>
+				<span>.tachibk, .proto.gz or a JSON-decoded backup</span>
+			</div>
+		</div>
+
+		<script type="module" src="js/app.js"></script>
+	</body>
+</html>

@@ -1,0 +1,6 @@
+# Library backups are personal data. The site reads whatever the visitor drops
+# in, so nothing here needs to be committed or deployed.
+*.tachibk
+*.proto.gz
+*.proto
+*.json

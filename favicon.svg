@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Donut chart">
+	<title>Manga Genres Read</title>
+	<!--
+		The page's own donut, in the first three categorical hues plus the pooled
+		grey. Segments are drawn as dashes on one stroked circle: pathLength="100"
+		makes the dash values read as percentages, and the 1-unit gaps are the same
+		surface gap the real chart uses. Mid-tone hues so it holds up on a light or
+		a dark tab strip.
+	-->
+	<g fill="none" stroke-width="7" transform="rotate(-90 16 16)">
+		<circle cx="16" cy="16" r="10.5" pathLength="100" stroke="#2a78d6" stroke-dasharray="34 66"/>
+		<circle cx="16" cy="16" r="10.5" pathLength="100" stroke="#eb6834" stroke-dasharray="24 76" stroke-dashoffset="-35"/>
+		<circle cx="16" cy="16" r="10.5" pathLength="100" stroke="#1baf7a" stroke-dasharray="19 81" stroke-dashoffset="-60"/>
+		<circle cx="16" cy="16" r="10.5" pathLength="100" stroke="#898781" stroke-dasharray="19 81" stroke-dashoffset="-80"/>
+	</g>
+</svg>
