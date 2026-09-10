@@ -15,7 +15,7 @@ import { createTable } from './table.js';
 import { createFilters } from './filters.js';
 import { createStats } from './stats.js';
 import { createTitles } from './titles.js';
-import { createShare } from './share.js';
+import { createQrCard } from './qrcard.js';
 import { createTheme } from './theme.js';
 
 /*
@@ -78,12 +78,12 @@ createTheme({
 	icon: document.getElementById('themeIcon')
 });
 
-createShare({
-	button: document.getElementById('shareButton'),
-	dialog: document.getElementById('shareDialog'),
-	closeButton: document.getElementById('shareClose'),
-	urlLabel: document.getElementById('shareUrl'),
-	copyButton: document.getElementById('shareCopy')
+createQrCard({
+	button: document.getElementById('qrButton'),
+	dialog: document.getElementById('qrDialog'),
+	closeButton: document.getElementById('qrClose'),
+	urlLabel: document.getElementById('qrUrl'),
+	copyButton: document.getElementById('qrCopy')
 });
 
 let library = null;

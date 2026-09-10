@@ -121,7 +121,7 @@ body,
 .tiles,
 .chip,
 .segment,
-.share-dialog {
+.qr-dialog {
 	transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
 }
 
@@ -132,7 +132,7 @@ body,
 	.tiles,
 	.chip,
 	.segment,
-	.share-dialog {
+	.qr-dialog {
 		transition: none;
 	}
 }
@@ -278,9 +278,17 @@ h1 {
 	}
 }
 
-/* ---------- share ---------- */
+/*
+ * ---------- share card ----------
+ *
+ * Named qr-* rather than share-*: content blockers ship generic element-hiding
+ * rules for share widgets, and #shareButton and #shareUrl are both literally in
+ * Fanboy's Social list, so the button vanished for anyone using it. The visible
+ * label and the aria-label can still say Share; no generic rule matches on
+ * element text or aria-label.
+ */
 
-.share-button {
+.qr-button {
 	align-items: center;
 	background: var(--surface);
 	border: 1px solid var(--rule);
@@ -297,19 +305,19 @@ h1 {
 	transition: background 120ms ease, border-color 120ms ease;
 }
 
-.share-button:hover {
+.qr-button:hover {
 	background: var(--wash);
 	border-color: var(--accent);
 	color: var(--ink);
 }
 
 /* The icon carries its own fill and stroke, so only size it here. */
-.share-button svg {
+.qr-button svg {
 	height: 15px;
 	width: 15px;
 }
 
-.share-dialog {
+.qr-dialog {
 	background: var(--surface);
 	border: 1px solid var(--ring);
 	border-radius: 14px;
@@ -321,25 +329,25 @@ h1 {
 	text-align: center;
 }
 
-.share-dialog::backdrop {
+.qr-dialog::backdrop {
 	backdrop-filter: blur(2px);
 	background: rgba(0, 0, 0, 0.55);
 }
 
-.share-dialog h2 {
+.qr-dialog h2 {
 	font-family: var(--font-display);
 	font-size: 20px;
 	font-weight: 600;
 	margin: 0;
 }
 
-.share-sub {
+.qr-sub {
 	color: var(--ink-2);
 	font-size: 12.5px;
 	margin: 4px 0 18px;
 }
 
-.share-close {
+.qr-close {
 	background: none;
 	border: 0;
 	color: var(--muted);
@@ -352,12 +360,12 @@ h1 {
 	top: 10px;
 }
 
-.share-close:hover {
+.qr-close:hover {
 	color: var(--ink);
 }
 
 /* White plate: the code needs a light ground to scan in either theme. */
-.share-qr {
+.qr-image {
 	background: #ffffff;
 	border-radius: 10px;
 	display: block;
@@ -367,7 +375,7 @@ h1 {
 	width: 220px;
 }
 
-.share-link {
+.qr-link {
 	align-items: center;
 	background: var(--plane);
 	border: 1px solid var(--hairline);
@@ -380,7 +388,7 @@ h1 {
 }
 
 /* Wraps rather than truncates: showing the whole link is the point. */
-.share-url {
+.qr-url {
 	color: var(--ink-2);
 	flex: 1;
 	font-family: var(--font-data);
@@ -391,7 +399,7 @@ h1 {
 	text-align: left;
 }
 
-.share-copy {
+.qr-copy {
 	background: var(--accent);
 	border: 0;
 	border-radius: 6px;
@@ -405,7 +413,7 @@ h1 {
 	padding: 7px 12px;
 }
 
-.share-copy:hover {
+.qr-copy:hover {
 	filter: brightness(1.08);
 }
 
@@ -1417,11 +1425,11 @@ tbody .keyed .swatch {
 	}
 
 	/* The icon alone carries it once the heading needs the width. */
-	.share-button span {
+	.qr-button span {
 		display: none;
 	}
 
-	.share-button {
+	.qr-button {
 		padding: 9px 11px;
 	}
 }

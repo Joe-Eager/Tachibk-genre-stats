@@ -66,7 +66,7 @@
 							</span>
 						</button>
 
-						<button aria-label="Share this site" class="share-button" id="shareButton" type="button">
+						<button aria-label="Share this site" class="qr-button" id="qrButton" type="button">
 							<svg
 								aria-hidden="true"
 								fill="none"
@@ -91,7 +91,8 @@
 				<label class="drop-target" for="fileInput">
 					<span aria-hidden="true" class="drop-mark">&#8593;</span>
 					<b>Drop a backup here</b>
-					<span class="drop-formats">.tachibk &middot; .proto.gz &middot; .json</span>
+					<!-- Slashes, not middots: a middot next to a leading dot reads as one mark. -->
+					<span class="drop-formats">.tachibk / .proto.gz / .json</span>
 					<span class="drop-browse">or choose a file</span>
 				</label>
 
@@ -234,14 +235,14 @@
 			id="fileInput"
 			type="file">
 
-		<dialog aria-labelledby="shareTitle" class="share-dialog" id="shareDialog">
-			<button aria-label="Close" class="share-close" id="shareClose" type="button">&times;</button>
-			<h2 id="shareTitle">Share this site</h2>
-			<p class="share-sub">Scan the code or copy the link</p>
-			<img alt="QR code linking to this site" class="share-qr" id="shareQr" src="site-qr.svg" width="220" height="220">
-			<div class="share-link">
-				<span class="share-url" id="shareUrl"></span>
-				<button class="share-copy" id="shareCopy" type="button">Copy</button>
+		<dialog aria-labelledby="qrTitle" class="qr-dialog" id="qrDialog">
+			<button aria-label="Close" class="qr-close" id="qrClose" type="button">&times;</button>
+			<h2 id="qrTitle">Share this site</h2>
+			<p class="qr-sub">Scan the code or copy the link</p>
+			<img alt="QR code linking to this site" class="qr-image" id="qrImage" src="site-qr.svg" width="220" height="220">
+			<div class="qr-link">
+				<span class="qr-url" id="qrUrl"></span>
+				<button class="qr-copy" id="qrCopy" type="button">Copy</button>
 			</div>
 		</dialog>
 
