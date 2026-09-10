@@ -1,5 +1,7 @@
 # Genres read
 
+**[Open it &rarr;](https://joe-eager.github.io/Tachibk-genre-stats/)**
+
 A static page that charts the genre mix of a Mihon library. The visitor supplies
 the backup: drop a file on the page, or pick one. Nothing is read from the server
 and nothing is uploaded, so it is safe to host for anyone to use.
@@ -20,14 +22,20 @@ Then open http://localhost:8000.
 
 ## Host it
 
+This copy runs on GitHub Pages at
+[joe-eager.github.io/Tachibk-genre-stats](https://joe-eager.github.io/Tachibk-genre-stats/),
+served from `main` at the repository root.
+
 Any static host works; there is no build step and no backend. For GitHub Pages,
 free on a public repo: Settings, Pages, Source "Deploy from a branch", branch
-`main`, folder `/ (root)`, Save. It publishes at
-`https://<user>.github.io/<repo>/` within a minute or two.
+`main`, folder `/ (root)`, Save.
 
 Every path in the page is relative, so serving it from a subdirectory works
 without changes. The `.nojekyll` file skips the Jekyll build, which this site
 does not need.
+
+Never commit a backup: the whole repository is served publicly, so a `.tachibk`
+in it becomes a public URL. `.gitignore` blocks them.
 
 **Do not deploy a backup alongside it.** Anything in this folder is served
 publicly, so a `.tachibk` left here is a public URL that exposes your library.
