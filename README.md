@@ -1,6 +1,6 @@
 # Genres read
 
-**[Open it &rarr;](https://joe-eager.github.io/Tachibk-genre-stats/)**
+**[Open it &rarr;](https://cheese-greater.github.io/Tachibk-genre-stats/)**
 
 A static page that charts the genre mix of a Mihon library. The visitor supplies
 the backup: drop a file on the page, or pick one. Nothing is read from the server
@@ -23,7 +23,7 @@ Then open http://localhost:8000.
 ## Host it
 
 This copy runs on GitHub Pages at
-[joe-eager.github.io/Tachibk-genre-stats](https://joe-eager.github.io/Tachibk-genre-stats/),
+[cheese-greater.github.io/Tachibk-genre-stats](https://cheese-greater.github.io/Tachibk-genre-stats/),
 served from `master` at the repository root.
 
 Any static host works; there is no build step and no backend. For GitHub Pages,
