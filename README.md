@@ -16,8 +16,18 @@ or
 npx serve .
 ```
 
-Then open http://localhost:8000. Any static host works the same way (GitHub
-Pages, Netlify, Cloudflare Pages); there is no build step and no backend.
+Then open http://localhost:8000.
+
+## Host it
+
+Any static host works; there is no build step and no backend. For GitHub Pages,
+free on a public repo: Settings, Pages, Source "Deploy from a branch", branch
+`main`, folder `/ (root)`, Save. It publishes at
+`https://<user>.github.io/<repo>/` within a minute or two.
+
+Every path in the page is relative, so serving it from a subdirectory works
+without changes. The `.nojekyll` file skips the Jekyll build, which this site
+does not need.
 
 **Do not deploy a backup alongside it.** Anything in this folder is served
 publicly, so a `.tachibk` left here is a public URL that exposes your library.
