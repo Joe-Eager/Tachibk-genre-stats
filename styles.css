@@ -24,7 +24,12 @@
 	--surface: #343746; /* elevated surface */
 	--ink: #f8f8f2; /* foreground */
 	--ink-2: #bfc0d0;
-	--muted: #6272a4; /* comment */
+	/*
+	 * Not Dracula's comment #6272a4: as text it measures 2.51:1 on the card and
+	 * 3.03:1 on the page, and it is used for 11px labels. This is the same slate
+	 * lifted to 4.93:1 and 5.95:1, which clears AA for small text on both.
+	 */
+	--muted: #a2a7bb;
 	--hairline: #3d4152;
 	--rule: #44475a; /* current line */
 	--ring: rgba(255, 255, 255, 0.10);
