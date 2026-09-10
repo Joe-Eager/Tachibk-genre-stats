@@ -24,11 +24,11 @@ Then open http://localhost:8000.
 
 This copy runs on GitHub Pages at
 [joe-eager.github.io/Tachibk-genre-stats](https://joe-eager.github.io/Tachibk-genre-stats/),
-served from `main` at the repository root.
+served from `master` at the repository root.
 
 Any static host works; there is no build step and no backend. For GitHub Pages,
-free on a public repo: Settings, Pages, Source "Deploy from a branch", branch
-`main`, folder `/ (root)`, Save.
+free on a public repo: Settings, Pages, Source "Deploy from a branch", pick your
+default branch, folder `/ (root)`, Save.
 
 Every path in the page is relative, so serving it from a subdirectory works
 without changes. The `.nojekyll` file skips the Jekyll build, which this site
