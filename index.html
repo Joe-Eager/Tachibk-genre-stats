@@ -16,8 +16,19 @@
 	<body>
 		<div class="shell">
 			<header>
-				<p class="eyebrow">Reading library</p>
-				<h1>Manga Genres Read</h1>
+				<div class="masthead">
+					<div>
+						<p class="eyebrow">Reading library</p>
+						<h1>Manga Genres Read</h1>
+					</div>
+					<button aria-label="Share this site" class="share-button" id="shareButton" type="button">
+						<svg aria-hidden="true" viewBox="0 0 24 24">
+							<path
+								d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM16 16h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z" />
+						</svg>
+						<span>Share</span>
+					</button>
+				</div>
 				<p class="dek">Genres, chapters and reading progress from a Mihon backup.</p>
 			</header>
 
@@ -167,6 +178,17 @@
 			class="file-input"
 			id="fileInput"
 			type="file">
+
+		<dialog aria-labelledby="shareTitle" class="share-dialog" id="shareDialog">
+			<button aria-label="Close" class="share-close" id="shareClose" type="button">&times;</button>
+			<h2 id="shareTitle">Share this site</h2>
+			<p class="share-sub">Scan the code or copy the link</p>
+			<img alt="QR code linking to this site" class="share-qr" id="shareQr" src="site-qr.svg" width="220" height="220">
+			<div class="share-link">
+				<span class="share-url" id="shareUrl"></span>
+				<button class="share-copy" id="shareCopy" type="button">Copy</button>
+			</div>
+		</dialog>
 
 		<div id="tip" hidden role="tooltip"></div>
 

@@ -157,10 +157,148 @@ h1 {
 	text-wrap: balance;
 }
 
+.masthead {
+	align-items: flex-start;
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+}
+
 .dek {
 	color: var(--ink-2);
 	margin: 10px 0 0;
 	max-width: 62ch;
+}
+
+/* ---------- share ---------- */
+
+.share-button {
+	align-items: center;
+	background: var(--surface);
+	border: 1px solid var(--rule);
+	border-radius: 8px;
+	color: var(--ink-2);
+	cursor: pointer;
+	display: inline-flex;
+	flex: none;
+	font-family: var(--font-ui);
+	font-size: 13px;
+	gap: 8px;
+	margin-top: 4px;
+	padding: 8px 13px;
+	transition: background 120ms ease, border-color 120ms ease;
+}
+
+.share-button:hover {
+	background: var(--wash);
+	border-color: var(--accent);
+	color: var(--ink);
+}
+
+.share-button svg {
+	fill: currentColor;
+	height: 15px;
+	width: 15px;
+}
+
+.share-dialog {
+	background: var(--surface);
+	border: 1px solid var(--ring);
+	border-radius: 14px;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+	color: var(--ink);
+	max-width: min(340px, calc(100vw - 32px));
+	padding: 26px 26px 22px;
+	position: relative;
+	text-align: center;
+}
+
+.share-dialog::backdrop {
+	backdrop-filter: blur(2px);
+	background: rgba(0, 0, 0, 0.55);
+}
+
+.share-dialog h2 {
+	font-family: var(--font-display);
+	font-size: 20px;
+	font-weight: 600;
+	margin: 0;
+}
+
+.share-sub {
+	color: var(--ink-2);
+	font-size: 12.5px;
+	margin: 4px 0 18px;
+}
+
+.share-close {
+	background: none;
+	border: 0;
+	color: var(--muted);
+	cursor: pointer;
+	font-size: 22px;
+	line-height: 1;
+	padding: 4px 8px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.share-close:hover {
+	color: var(--ink);
+}
+
+/* White plate: the code needs a light ground to scan in either theme. */
+.share-qr {
+	background: #ffffff;
+	border-radius: 10px;
+	display: block;
+	height: auto;
+	margin: 0 auto;
+	max-width: 100%;
+	width: 220px;
+}
+
+.share-link {
+	align-items: center;
+	background: var(--plane);
+	border: 1px solid var(--hairline);
+	border-radius: 8px;
+	display: flex;
+	gap: 8px;
+	margin-top: 18px;
+	padding: 6px 6px 6px 12px;
+	text-align: left;
+}
+
+/* Wraps rather than truncates: showing the whole link is the point. */
+.share-url {
+	color: var(--ink-2);
+	flex: 1;
+	font-family: var(--font-data);
+	font-size: 11px;
+	line-height: 1.35;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	text-align: left;
+}
+
+.share-copy {
+	background: var(--accent);
+	border: 0;
+	border-radius: 6px;
+	color: #ffffff;
+	cursor: pointer;
+	flex: none;
+	font-family: var(--font-ui);
+	font-size: 12.5px;
+	font-weight: 500;
+	min-width: 8ch;
+	padding: 7px 12px;
+}
+
+.share-copy:hover {
+	filter: brightness(1.08);
 }
 
 .dek b {
@@ -1168,6 +1306,15 @@ tbody .keyed .swatch {
 
 	h1 {
 		font-size: 28px;
+	}
+
+	/* The icon alone carries it once the heading needs the width. */
+	.share-button span {
+		display: none;
+	}
+
+	.share-button {
+		padding: 9px 11px;
 	}
 }
 

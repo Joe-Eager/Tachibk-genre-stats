@@ -15,6 +15,7 @@ import { createTable } from './table.js';
 import { createFilters } from './filters.js';
 import { createStats } from './stats.js';
 import { createTitles } from './titles.js';
+import { createShare } from './share.js';
 
 /*
  * The visitor brings the backup: nothing is loaded from the server unless
@@ -68,6 +69,15 @@ const state = {
 
 const tooltip = createTooltip(elements.tip);
 const filters = createFilters({ elements, state, getLibrary: () => library, onChange: refresh });
+
+// Independent of the loaded data, so it is wired once and always available.
+createShare({
+	button: document.getElementById('shareButton'),
+	dialog: document.getElementById('shareDialog'),
+	closeButton: document.getElementById('shareClose'),
+	urlLabel: document.getElementById('shareUrl'),
+	copyButton: document.getElementById('shareCopy')
+});
 
 let library = null;
 let panels = null;
