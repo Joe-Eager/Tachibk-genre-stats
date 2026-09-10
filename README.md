@@ -35,16 +35,28 @@ rather than the file name, so a renamed backup still loads:
 
 To export one from Mihon: Settings, then Data and storage, then Create backup.
 
-Only four fields are read (`BackupManga.source`, `.title`, `.genre` and
-`BackupSource.name`/`.sourceId`); everything else in the backup is skipped
-without being decoded. Source ids run past 2^53, so they are decoded as `BigInt`
-and kept as text.
+Only the fields the charts need are read: `BackupManga.source`, `.title`,
+`.genre`, `.status`, `.chapters` (for `read` and `bookmark`) and `.history` (for
+`readDuration`), plus `BackupSource.name`/`.sourceId`. Everything else is skipped
+without being decoded, which matters because a 2MB backup expands to around
+10MB of protobuf. Source ids run past 2^53, so they are decoded as `BigInt` and
+kept as text.
 
 `?data=<url>` loads a backup from the server instead of asking for one, for
 anyone hosting their own copy beside a file they are happy to serve publicly.
 It is the only case where this page fetches data.
 
 ## What it shows
+
+- **Headline tiles**: titles, chapters, chapters read, time read, genre tags,
+  distinct genres.
+- **Share of genre tags** as a donut, top N genres with the tail pooled.
+- **Reading progress**: finished, in progress and not started, as one ordered
+  ramp rather than unrelated hues.
+- **Publication status**: ongoing, completed, on hiatus and so on.
+- **Titles** ranked by most read or longest, each with a read-against-total
+  meter so a short finished series does not look like a long abandoned one.
+- **Every genre ranked**, and a sortable table of all of them.
 
 Each title carries a flat list of genre tags, several per title. That makes two
 different percentages, and the page shows both.
@@ -53,6 +65,17 @@ different percentages, and the page shows both.
   to 100%, so the donut is a true part-to-whole.
 - **On titles** divides by the titles in view. One title carries several
   genres, so these add up to well over 100%.
+
+### Backups vary in what they carry
+
+An older or partial export may have no chapter or history data. Every aggregate
+distinguishes absent from zero: a missing figure shows as `--` labelled "not in
+this backup", the panels that depend on it drop out, a footnote names what is
+missing, and everything the file does have still renders.
+
+Reading time comes from history rows, which Mihon keeps per chapter read and
+prunes over time. It is a floor, not a lifetime total, so the tile says how many
+chapters it is drawn from.
 
 Controls, all of which scope every panel at once:
 
@@ -81,10 +104,12 @@ favicon.ico       32px and 16px fallback for browsers without SVG icons
 js/app.js         file intake, filter state, drives the panels
 js/backup.js      format sniffing, gunzip, Mihon backup field numbers
 js/protobuf.js    minimal protobuf wire-format reader
-js/data.js        indexing and counting (no DOM, no network)
+js/data.js        indexing, counting and the per-view aggregates
+js/stats.js       headline tiles, reading progress, publication status
 js/donut.js       the donut and its centre figure
 js/legend.js      named slices with values
-js/bars.js        the full ranking
+js/titles.js      per-title read-against-length meters
+js/bars.js        the full genre ranking
 js/table.js       sortable table view
 js/filters.js     the filter row
 js/tooltip.js     shared hover readout

@@ -43,6 +43,11 @@
 	--label-on-8: #0b0b0b;
 	--label-on-other: #0b0b0b;
 
+	/* Reading progress is an ordered scale, so one hue light to dark. */
+	--ordinal-1: #86b6ef;
+	--ordinal-2: #3987e5;
+	--ordinal-3: #1c5cab;
+
 	--font-ui: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 	--font-display: 'IBM Plex Sans Condensed', 'IBM Plex Sans', system-ui, sans-serif;
 	--font-data: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
@@ -84,6 +89,11 @@
 		--label-on-7: #0b0b0b;
 		--label-on-8: #0b0b0b;
 		--label-on-other: #0b0b0b;
+
+		/* Re-stepped for the dark surface: the darkest step still clears 2:1. */
+		--ordinal-1: #256abf;
+		--ordinal-2: #6da7ec;
+		--ordinal-3: #b7d3f6;
 	}
 }
 
@@ -286,7 +296,9 @@ body:has(.file-input:focus-visible) .loader {
 /* ---------- filter row ---------- */
 
 .filters {
-	align-items: flex-end;
+	/* Top-aligned so every field label lines up however many rows the source
+	   chips wrap onto. */
+	align-items: flex-start;
 	border-block: 1px solid var(--hairline);
 	display: flex;
 	flex-wrap: wrap;
@@ -471,33 +483,148 @@ body:has(.file-input:focus-visible) .loader {
 	color: var(--ink-2);
 }
 
-/* ---------- summary strip ---------- */
+/* ---------- headline tiles ---------- */
 
-.summary {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px 40px;
-	margin: 0;
+.tiles {
+	display: grid;
+	gap: 1px;
+	grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+	/* The 1px grid gap plus this ground draws the dividers between tiles. */
+	background: var(--hairline);
+	border: 1px solid var(--hairline);
+	border-radius: 12px;
+	overflow: hidden;
 }
 
-.summary div {
+.tile {
+	background: var(--surface);
 	display: flex;
 	flex-direction: column;
-	gap: 1px;
+	gap: 2px;
+	padding: 14px 16px;
 }
 
-.summary dt {
+.tile-label {
 	color: var(--muted);
 	font-size: 11.5px;
 	letter-spacing: 0.04em;
 }
 
-.summary dd {
+.tile-value {
 	color: var(--ink);
 	font-family: var(--font-data);
-	font-size: 19px;
+	font-size: 21px;
 	font-weight: 500;
-	margin: 0;
+	line-height: 1.15;
+}
+
+.tile-value.is-absent {
+	color: var(--muted);
+}
+
+.tile-note {
+	color: var(--muted);
+	font-size: 11px;
+	min-height: 1lh;
+}
+
+/* ---------- side by side panels ---------- */
+
+.pair {
+	display: grid;
+	gap: 28px;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* ---------- stacked part-to-whole bar ---------- */
+
+.stack {
+	display: flex;
+	/* The gap is the surface showing through, not a border on each segment. */
+	gap: 2px;
+	height: 18px;
+	margin-bottom: 4px;
+	overflow: hidden;
+}
+
+.stack-segment {
+	min-width: 3px;
+}
+
+.stack-segment:first-child {
+	border-radius: 4px 0 0 4px;
+}
+
+.stack-segment:last-child {
+	border-radius: 0 4px 4px 0;
+}
+
+/* ---------- titles ---------- */
+
+.titles {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.title-row {
+	align-items: center;
+	display: grid;
+	gap: 4px 12px;
+	grid-template-areas: 'name meter value share';
+	grid-template-columns: minmax(0, 1.5fr) minmax(60px, 1fr) 9ch 4ch;
+	padding: 3px 0;
+}
+
+.title-row:hover {
+	background: var(--wash);
+}
+
+.title-name {
+	color: var(--ink-2);
+	font-size: 12.5px;
+	grid-area: name;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.title-meter {
+	display: block;
+	grid-area: meter;
+	width: 100%;
+}
+
+.title-track {
+	background: var(--ordinal-1);
+	border-radius: 0 3px 3px 0;
+	display: block;
+	height: 12px;
+}
+
+.title-fill {
+	background: var(--ordinal-3);
+	border-radius: 0 3px 3px 0;
+	display: block;
+	height: 100%;
+}
+
+.title-value {
+	color: var(--ink);
+	font-family: var(--font-data);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	grid-area: value;
+	text-align: right;
+}
+
+.title-share {
+	color: var(--muted);
+	font-family: var(--font-data);
+	font-size: 11.5px;
+	font-variant-numeric: tabular-nums;
+	grid-area: share;
+	text-align: right;
 }
 
 /* ---------- panels ---------- */
@@ -509,8 +636,24 @@ body:has(.file-input:focus-visible) .loader {
 	padding: 24px;
 }
 
+/*
+ * A header holds a heading, optionally a control pushed to the end, and
+ * optionally a sub line that always takes a row of its own.
+ */
 .panel > header {
+	align-items: baseline;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
 	margin-bottom: 20px;
+}
+
+.panel > header .segment {
+	margin-left: auto;
+}
+
+.panel > header .sub {
+	flex-basis: 100%;
 }
 
 .panel h2 {
@@ -958,17 +1101,44 @@ tbody .keyed .swatch {
 	}
 }
 
-@media (max-width: 560px) {
+@media (max-width: 620px) {
 	.shell {
-		padding-inline: 16px;
+		gap: 22px;
+		padding-block: 28px 48px;
+		padding-inline: 14px;
 	}
 
 	.panel {
-		padding: 18px 16px;
+		padding: 16px 14px;
+	}
+
+	.pair {
+		gap: 22px;
+	}
+
+	/* Filters become one stacked column rather than a wide wrapping row. */
+	.filters {
+		gap: 16px;
+	}
+
+	.field {
+		width: 100%;
+	}
+
+	.tiles {
+		grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+	}
+
+	.tile {
+		padding: 11px 12px;
+	}
+
+	.tile-value {
+		font-size: 18px;
 	}
 
 	.bar-row {
-		grid-template-columns: minmax(74px, 116px) minmax(0, 1fr) 6ch;
+		grid-template-columns: minmax(70px, 108px) minmax(0, 1fr) 6ch;
 	}
 
 	.legend li {
@@ -977,6 +1147,27 @@ tbody .keyed .swatch {
 
 	.legend .titles {
 		display: none;
+	}
+
+	/* The meter drops to its own row so the name keeps its width. */
+	.title-row {
+		grid-template-areas:
+			'name value share'
+			'meter meter meter';
+		grid-template-columns: minmax(0, 1fr) 9ch 4ch;
+	}
+
+	.drop-target {
+		padding: 40px 16px;
+	}
+
+	.intro-notes {
+		gap: 18px;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	h1 {
+		font-size: 28px;
 	}
 }
 

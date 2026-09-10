@@ -57,14 +57,6 @@ export function createLegend({ list, tooltip, highlight }) {
 
 			list.appendChild(item);
 		}
-
-		list.appendChild(
-			element(
-				'li',
-				'caption',
-				`Share of ${formatCount(total)} tag assignments. Titles counts the titles carrying that genre.`
-			)
-		);
 	}
 
 	return { render };

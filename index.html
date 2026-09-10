@@ -18,10 +18,7 @@
 			<header>
 				<p class="eyebrow">Reading library</p>
 				<h1>Manga Genres Read</h1>
-				<p class="dek">
-					Open a Mihon backup and see what your library is actually made of. A title carries several genre
-					tags at once, so every share here is a slice of all the tag assignments rather than of the titles.
-				</p>
+				<p class="dek">Genres, chapters and reading progress from a Mihon backup.</p>
 			</header>
 
 			<section class="intro" id="intro">
@@ -36,25 +33,16 @@
 
 				<div class="intro-notes">
 					<div>
-						<b>It stays on your device</b>
-						<p>
-							The backup is read in your browser and never uploaded. This page makes no network
-							request except for its own fonts.
-						</p>
+						<b>Stays on your device</b>
+						<p>Read in the browser, never uploaded.</p>
 					</div>
 					<div>
-						<b>Where to find a backup</b>
-						<p>
-							In Mihon: Settings, then Data and storage, then Create backup. The file it writes is
-							named <code>app.mihon_&lt;date&gt;.tachibk</code>.
-						</p>
+						<b>Making a backup</b>
+						<p>Mihon: Settings, Data and storage, Create backup.</p>
 					</div>
 					<div>
-						<b>What you get</b>
-						<p>
-							Genre share as a donut, the full ranking of every genre in the library, and a sortable
-							table, all filterable by the source each title came from.
-						</p>
+						<b>Older backups</b>
+						<p>Anything the file lacks is marked missing, not counted as zero.</p>
 					</div>
 				</div>
 			</section>
@@ -64,7 +52,7 @@
 					<div class="field">
 						<div class="label">
 							<span id="sourceLabel">Sources</span>
-							<button class="reset" id="sourceReset" type="button">Select all</button>
+							<button class="reset" id="sourceReset" type="button">All</button>
 						</div>
 						<div class="chips" id="sourceChips"></div>
 					</div>
@@ -79,13 +67,10 @@
 					</div>
 
 					<div class="field">
-						<div class="label"><span>Tag cleanup</span></div>
+						<div class="label"><span>Tags</span></div>
 						<label class="check" for="excludeFormat">
 							<input checked id="excludeFormat" type="checkbox">
-							<span>
-								<b>Drop format tags</b>
-								Ignores the publishing tags listed below the charts.
-							</span>
+							<span><b>Drop format tags</b></span>
 						</label>
 					</div>
 
@@ -93,13 +78,13 @@
 						<div class="label"><span>Data</span></div>
 						<label class="loader" for="fileInput">
 							<span aria-hidden="true">&#8593;</span>
-							<span>Load another backup</span>
+							<span>Load another</span>
 						</label>
 						<p class="load-note" id="loadNote" data-kind="ok"></p>
 					</div>
 				</div>
 
-				<dl class="summary" id="summary"></dl>
+				<div class="tiles" id="tiles"></div>
 
 				<section class="panel">
 					<header>
@@ -117,9 +102,33 @@
 					</div>
 				</section>
 
+				<div class="pair">
+					<section class="panel" id="progressPanel">
+						<header><h2>Reading progress</h2></header>
+						<div class="stack" id="progressBar"></div>
+						<ul class="legend" id="progressLegend"></ul>
+					</section>
+
+					<section class="panel" id="statusPanel">
+						<header><h2>Publication status</h2></header>
+						<div class="bars" id="statusBars"></div>
+					</section>
+				</div>
+
+				<section class="panel" id="titlesPanel">
+					<header>
+						<h2>Titles</h2>
+						<div class="segment" id="titleSeg" role="group" aria-label="Rank titles by">
+							<button aria-pressed="true" data-mode="mostRead" type="button">Most read</button>
+							<button aria-pressed="false" data-mode="longest" type="button">Longest</button>
+						</div>
+					</header>
+					<div class="titles" id="titleList"></div>
+				</section>
+
 				<section class="panel">
 					<header>
-						<h2>Every genre in view, ranked</h2>
+						<h2>Every genre in view</h2>
 						<p class="sub" id="barSub"></p>
 					</header>
 					<div class="bars" id="bars"></div>
@@ -128,11 +137,8 @@
 
 				<section class="panel">
 					<header>
-						<h2>Table view</h2>
-						<p class="sub">
-							The same numbers without relying on colour. Titles counts the titles carrying the genre;
-							a title tagged Fantasy and Action is counted once in each.
-						</p>
+						<h2>Table</h2>
+						<p class="sub">Titles counts the titles carrying a genre, so a title counts once per genre.</p>
 					</header>
 					<div class="table-wrap">
 						<table>
@@ -143,15 +149,10 @@
 				</section>
 
 				<div class="notes">
+					<p id="noteMissing" hidden></p>
 					<p id="noteFormat"></p>
 					<p id="noteMerges" hidden></p>
 					<p id="noteSkew"></p>
-					<p>
-						The two percentages answer different questions. <b>Share of tags</b> divides by every tag
-						assignment in view, so the slices add up to 100% and the donut is a true part-to-whole.
-						<b>On titles</b> divides by the titles in view, and since one title carries several genres
-						those figures add up to far more than 100%.
-					</p>
 				</div>
 			</div>
 		</div>
@@ -172,7 +173,7 @@
 		<div class="dropzone" id="dropzone" hidden>
 			<div class="dropzone-card">
 				<b>Drop to chart it</b>
-				<span>.tachibk, .proto.gz or a JSON-decoded backup</span>
+				<span>.tachibk, .proto.gz or .json</span>
 			</div>
 		</div>
 
