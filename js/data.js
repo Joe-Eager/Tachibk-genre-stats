@@ -310,11 +310,17 @@ export function buildView(library, state) {
 	const result = tally(library, chosen, state.excludeFormat);
 	const counts = new Map(result.ranked.map((row) => [row.name, row.count]));
 
+	/*
+	 * Kept in the fixed colour order rather than sorted by size. Two reasons:
+	 * neighbouring slices are then always consecutive slots, which is the pair
+	 * ordering the palette was validated on, and the ring stops rearranging
+	 * itself every time the source filter changes. The slot order is the whole
+	 * library's ranking, so an unfiltered view still reads largest first.
+	 */
 	const slices = library.slotOrder
 		.slice(0, state.sliceCount)
 		.map((name) => ({ name, count: counts.get(name) || 0, slot: library.slotOf.get(name) }))
-		.filter((row) => row.count > 0)
-		.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+		.filter((row) => row.count > 0);
 
 	const namedTags = slices.reduce((sum, row) => sum + row.count, 0);
 	const otherTags = result.totalTags - namedTags;

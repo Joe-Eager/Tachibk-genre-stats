@@ -12,6 +12,29 @@
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 		<link rel="stylesheet" href="styles.css">
+		<script>
+			/*
+				Stamps the theme before first paint, so the page never flashes the
+				wrong one. A stored choice wins; otherwise follow the system, and
+				fall back to Dracula. Deliberately inline and blocking: a module
+				script would run too late to help.
+			*/
+			(function () {
+				var stored = null;
+				try {
+					stored = localStorage.getItem('theme');
+				} catch (error) {
+					// Blocked site data: fall through to the system preference.
+				}
+				var theme =
+					stored === 'dracula' || stored === 'alucard'
+						? stored
+						: window.matchMedia('(prefers-color-scheme: light)').matches
+							? 'alucard'
+							: 'dracula';
+				document.documentElement.dataset.theme = theme;
+			})();
+		</script>
 	</head>
 	<body>
 		<div class="shell">
@@ -21,13 +44,45 @@
 						<p class="eyebrow">Reading library</p>
 						<h1>Manga Genres Read</h1>
 					</div>
-					<button aria-label="Share this site" class="share-button" id="shareButton" type="button">
-						<svg aria-hidden="true" viewBox="0 0 24 24">
-							<path
-								d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM16 16h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z" />
-						</svg>
-						<span>Share</span>
-					</button>
+					<div class="masthead-actions">
+						<button
+							aria-checked="true"
+							aria-label="Dark theme"
+							class="theme-toggle"
+							id="themeToggle"
+							role="switch"
+							type="button">
+							<span class="theme-toggle__track">
+								<span class="theme-toggle__knob">
+									<svg
+										aria-hidden="true"
+										class="theme-toggle__icon"
+										fill="currentColor"
+										id="themeIcon"
+										viewBox="0 0 24 24">
+										<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+									</svg>
+								</span>
+							</span>
+						</button>
+
+						<button aria-label="Share this site" class="share-button" id="shareButton" type="button">
+							<svg
+								aria-hidden="true"
+								fill="none"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								viewBox="0 0 24 24">
+								<circle cx="18" cy="5" r="3" />
+								<circle cx="6" cy="12" r="3" />
+								<circle cx="18" cy="19" r="3" />
+								<path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" />
+							</svg>
+							<span>Share</span>
+						</button>
+					</div>
 				</div>
 				<p class="dek">Genres, chapters and reading progress from a Mihon backup.</p>
 			</header>

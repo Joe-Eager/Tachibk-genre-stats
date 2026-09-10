@@ -1,25 +1,88 @@
 /*
- * Palette, mark specs and spacers follow one data-visualisation system:
- * a fixed categorical hue order (never cycled, never assigned by rank), a 2px
- * surface gap between touching fills, hairline chrome and recessive text tokens.
- * The eight series hues were validated for colour-vision separation against both
- * surfaces; the three light steps that fall below 3:1 are why the legend always
- * carries values and the table view always exists.
+ * Chrome is Dracula (dark, the default) and Alucard, its official light
+ * counterpart: https://draculatheme.com/spec
+ *
+ * The chart marks are NOT Dracula's own hues. Dracula is a syntax palette,
+ * deliberately uniform in brightness, which is the opposite of what adjacent
+ * chart segments need: measured on the Dracula card surface, its green and
+ * orange sit 3.3 apart under deuteranopia (the gate is 8) and its purple and
+ * pink 13.1 apart for normal vision (the floor is 15). The mark hues below were
+ * validated against both of these surfaces instead. Series colours that fall
+ * below 3:1 against the surface are why the legend always carries values and
+ * the table view always exists.
+ *
+ * The theme is stamped on <html> as data-theme by an inline script before first
+ * paint, so there is no flash of the wrong theme; Dracula is what shows if that
+ * script never runs.
  */
 
-:root {
+:root,
+:root[data-theme='dracula'] {
+	color-scheme: dark;
+
+	--plane: #282a36; /* background */
+	--surface: #343746; /* elevated surface */
+	--ink: #f8f8f2; /* foreground */
+	--ink-2: #bfc0d0;
+	--muted: #6272a4; /* comment */
+	--hairline: #3d4152;
+	--rule: #44475a; /* current line */
+	--ring: rgba(255, 255, 255, 0.10);
+	--wash: rgba(255, 121, 198, 0.10);
+	--accent: #ff79c6; /* pink */
+	--accent-ink: #282a36;
+
+	--series-1: #3987e5;
+	--series-2: #d95926;
+	--series-3: #199e70;
+	--series-4: #c98500;
+	--series-5: #d55181;
+	--series-6: #008300;
+	--series-7: #9085e9;
+	--series-8: #e66767;
+	/*
+	 * The pooled slice is a desaturated slate rather than Dracula's comment
+	 * colour: #6272a4 sits only 10.6 from the blue slot for normal vision, under
+	 * the floor of 15, and the pooled slice is usually the ring's biggest.
+	 */
+	--series-other: #9aa0b5;
+
+	/* Every dark step is a mid-tone, so near-black is the higher-contrast label
+	   ink on all of them. */
+	--label-on-1: #0b0b0b;
+	--label-on-2: #0b0b0b;
+	--label-on-3: #0b0b0b;
+	--label-on-4: #0b0b0b;
+	--label-on-5: #0b0b0b;
+	--label-on-6: #0b0b0b;
+	--label-on-7: #0b0b0b;
+	--label-on-8: #0b0b0b;
+	--label-on-other: #0b0b0b;
+
+	/* Reading progress is an ordered scale, so one hue across three steps. */
+	--ordinal-1: #256abf;
+	--ordinal-2: #6da7ec;
+	--ordinal-3: #b7d3f6;
+
+	--font-ui: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-display: 'IBM Plex Sans Condensed', 'IBM Plex Sans', system-ui, sans-serif;
+	--font-data: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+
+:root[data-theme='alucard'] {
 	color-scheme: light;
 
-	--plane: #f9f9f7;
-	--surface: #fcfcfb;
-	--ink: #0b0b0b;
-	--ink-2: #52514e;
-	--muted: #898781;
-	--hairline: #e1e0d9;
-	--rule: #c3c2b7;
-	--ring: rgba(11, 11, 11, 0.10);
-	--wash: rgba(42, 120, 214, 0.07);
-	--accent: #2a78d6;
+	--plane: #fffbeb; /* background */
+	--surface: #ffffff; /* elevated surface */
+	--ink: #1f1f1f; /* high-emphasis text */
+	--ink-2: #57523c;
+	--muted: #6c664b; /* comment */
+	--hairline: #e4e2d4;
+	--rule: #cfcfde; /* selection */
+	--ring: rgba(31, 31, 31, 0.12);
+	--wash: rgba(163, 20, 77, 0.07);
+	--accent: #a3144d; /* pink */
+	--accent-ink: #ffffff;
 
 	--series-1: #2a78d6;
 	--series-2: #eb6834;
@@ -29,10 +92,8 @@
 	--series-6: #008300;
 	--series-7: #4a3aa7;
 	--series-8: #e34948;
-	--series-other: #898781;
+	--series-other: #6c664b;
 
-	/* Ink for text set inside a filled slice: whichever of near-black or white
-	   clears contrast against that particular fill. */
 	--label-on-1: #ffffff;
 	--label-on-2: #0b0b0b;
 	--label-on-3: #0b0b0b;
@@ -41,59 +102,33 @@
 	--label-on-6: #ffffff;
 	--label-on-7: #ffffff;
 	--label-on-8: #0b0b0b;
-	--label-on-other: #0b0b0b;
+	--label-on-other: #ffffff;
 
-	/* Reading progress is an ordered scale, so one hue light to dark. */
 	--ordinal-1: #86b6ef;
 	--ordinal-2: #3987e5;
 	--ordinal-3: #1c5cab;
-
-	--font-ui: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-	--font-display: 'IBM Plex Sans Condensed', 'IBM Plex Sans', system-ui, sans-serif;
-	--font-data: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		color-scheme: dark;
+/* Theme changes fade rather than snap, except where motion is unwelcome. */
+body,
+.panel,
+.tile,
+.tiles,
+.chip,
+.segment,
+.share-dialog {
+	transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
 
-		--plane: #0d0d0d;
-		--surface: #1a1a19;
-		--ink: #ffffff;
-		--ink-2: #c3c2b7;
-		--muted: #898781;
-		--hairline: #2c2c2a;
-		--rule: #383835;
-		--ring: rgba(255, 255, 255, 0.10);
-		--wash: rgba(57, 135, 229, 0.13);
-		--accent: #3987e5;
-
-		--series-1: #3987e5;
-		--series-2: #d95926;
-		--series-3: #199e70;
-		--series-4: #c98500;
-		--series-5: #d55181;
-		--series-6: #008300;
-		--series-7: #9085e9;
-		--series-8: #e66767;
-		--series-other: #898781;
-
-		/* Every dark step is a mid-tone chosen to clear 3:1 on the dark surface,
-		   so near-black is the higher-contrast label ink on all of them. */
-		--label-on-1: #0b0b0b;
-		--label-on-2: #0b0b0b;
-		--label-on-3: #0b0b0b;
-		--label-on-4: #0b0b0b;
-		--label-on-5: #0b0b0b;
-		--label-on-6: #0b0b0b;
-		--label-on-7: #0b0b0b;
-		--label-on-8: #0b0b0b;
-		--label-on-other: #0b0b0b;
-
-		/* Re-stepped for the dark surface: the darkest step still clears 2:1. */
-		--ordinal-1: #256abf;
-		--ordinal-2: #6da7ec;
-		--ordinal-3: #b7d3f6;
+@media (prefers-reduced-motion: reduce) {
+	body,
+	.panel,
+	.tile,
+	.tiles,
+	.chip,
+	.segment,
+	.share-dialog {
+		transition: none;
 	}
 }
 
@@ -170,6 +205,74 @@ h1 {
 	max-width: 62ch;
 }
 
+.masthead-actions {
+	align-items: center;
+	display: flex;
+	flex: none;
+	gap: 8px;
+	margin-top: 4px;
+}
+
+/* ---------- theme toggle ---------- */
+
+.theme-toggle {
+	background: none;
+	border: 0;
+	cursor: pointer;
+	flex: none;
+	line-height: 0;
+	padding: 0;
+}
+
+.theme-toggle__track {
+	align-items: center;
+	background: var(--surface);
+	border: 1px solid var(--rule);
+	border-radius: 999px;
+	display: flex;
+	height: 34px;
+	padding: 3px;
+	transition: background 160ms ease, border-color 160ms ease;
+	width: 60px;
+}
+
+.theme-toggle:hover .theme-toggle__track {
+	border-color: var(--accent);
+}
+
+.theme-toggle__knob {
+	align-items: center;
+	background: var(--accent);
+	border-radius: 999px;
+	color: var(--accent-ink);
+	display: flex;
+	height: 26px;
+	justify-content: center;
+	transition: transform 200ms ease, background 160ms ease;
+	width: 26px;
+}
+
+/* Knob sits right in the dark theme, left in the light one. */
+:root[data-theme='alucard'] .theme-toggle__knob {
+	transform: translateX(0);
+}
+
+:root:not([data-theme='alucard']) .theme-toggle__knob {
+	transform: translateX(26px);
+}
+
+.theme-toggle__icon {
+	height: 14px;
+	width: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.theme-toggle__knob,
+	.theme-toggle__track {
+		transition: none;
+	}
+}
+
 /* ---------- share ---------- */
 
 .share-button {
@@ -195,8 +298,8 @@ h1 {
 	color: var(--ink);
 }
 
+/* The icon carries its own fill and stroke, so only size it here. */
 .share-button svg {
-	fill: currentColor;
 	height: 15px;
 	width: 15px;
 }
@@ -287,7 +390,7 @@ h1 {
 	background: var(--accent);
 	border: 0;
 	border-radius: 6px;
-	color: #ffffff;
+	color: var(--accent-ink);
 	cursor: pointer;
 	flex: none;
 	font-family: var(--font-ui);
@@ -558,7 +661,7 @@ body:has(.file-input:focus-visible) .loader {
 
 .segment button[aria-pressed='true'] {
 	background: var(--accent);
-	color: #ffffff;
+	color: var(--accent-ink);
 	font-weight: 500;
 }
 

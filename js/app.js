@@ -16,6 +16,7 @@ import { createFilters } from './filters.js';
 import { createStats } from './stats.js';
 import { createTitles } from './titles.js';
 import { createShare } from './share.js';
+import { createTheme } from './theme.js';
 
 /*
  * The visitor brings the backup: nothing is loaded from the server unless
@@ -70,7 +71,13 @@ const state = {
 const tooltip = createTooltip(elements.tip);
 const filters = createFilters({ elements, state, getLibrary: () => library, onChange: refresh });
 
-// Independent of the loaded data, so it is wired once and always available.
+// Both are independent of the loaded data, so they are wired once and are
+// available whether or not a backup has been opened.
+createTheme({
+	button: document.getElementById('themeToggle'),
+	icon: document.getElementById('themeIcon')
+});
+
 createShare({
 	button: document.getElementById('shareButton'),
 	dialog: document.getElementById('shareDialog'),
